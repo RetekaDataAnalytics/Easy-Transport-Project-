@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Easy Transport – Dubai Academic City Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0f1117;--surface:#1a1d27;--card:#21253a;--border:#2e3350;
+    --accent:#4f8ef7;--accent2:#f7c948;--accent3:#4fc87a;--accent4:#f75f5f;
+    --text:#e8eaf6;--muted:#8b92b8;--radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+
+  /* ── Header ── */
+  header{
+    background:linear-gradient(135deg,#1a237e 0%,#0d47a1 50%,#01579b 100%);
+    padding:28px 40px 24px;
+    border-bottom:1px solid #1a3a6b;
+  }
+  header h1{font-size:1.85rem;font-weight:700;letter-spacing:-.3px}
+  header h1 span{color:var(--accent2)}
+  header p{color:#90caf9;font-size:.92rem;margin-top:4px}
+  .badge{
+    display:inline-block;background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.2);border-radius:20px;
+    padding:2px 12px;font-size:.78rem;margin-top:8px;color:#e3f2fd;
+  }
+
+  /* ── Nav ── */
+  nav{
+    display:flex;gap:6px;padding:14px 40px;background:var(--surface);
+    border-bottom:1px solid var(--border);flex-wrap:wrap;
+  }
+  nav button{
+    background:none;border:1px solid var(--border);color:var(--muted);
+    padding:6px 16px;border-radius:20px;cursor:pointer;font-size:.82rem;transition:.2s;
+  }
+  nav button:hover,nav button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* ── Layout ── */
+  main{padding:28px 40px;max-width:1400px;margin:0 auto}
+  .page{display:none}.page.active{display:block}
+
+  /* ── KPI Row ── */
+  .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-bottom:28px}
+  .kpi{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:20px;text-align:center;
+  }
+  .kpi .val{font-size:2rem;font-weight:700;line-height:1.1}
+  .kpi .lbl{font-size:.75rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+  .kpi.blue .val{color:var(--accent)}
+  .kpi.yellow .val{color:var(--accent2)}
+  .kpi.green .val{color:var(--accent3)}
+  .kpi.red .val{color:var(--accent4)}
+
+  /* ── Grid ── */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px}
+  .grid-1{display:grid;grid-template-columns:1fr;gap:20px;margin-bottom:20px}
+  @media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}}
+
+  /* ── Card ── */
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px;
+  }
+  .card h3{font-size:.88rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px}
+  .card canvas{max-height:280px}
+
+  /* ── Section title ── */
+  .section-title{
+    font-size:1.1rem;font-weight:600;color:var(--accent);
+    border-left:3px solid var(--accent);padding-left:12px;margin:28px 0 16px;
+  }
+
+  /* ── Bar list ── */
+  .bar-list{display:flex;flex-direction:column;gap:10px}
+  .bar-item{display:flex;align-items:center;gap:10px;font-size:.83rem}
+  .bar-item .name{width:160px;color:var(--muted);flex-shrink:0;text-align:right}
+  .bar-item .track{flex:1;background:#2a2d40;border-radius:6px;height:18px;overflow:hidden}
+  .bar-item .fill{height:100%;border-radius:6px;transition:width .6s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:.72rem;font-weight:600;color:#fff}
+  .bar-item .cnt{width:40px;text-align:right;color:var(--text);font-size:.8rem}
+
+  footer{text-align:center;color:var(--muted);font-size:.75rem;padding:28px;border-top:1px solid var(--border);margin-top:20px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🚌 Easy Transport — <span>Dubai Academic City</span></h1>
+  <p>Student Transport Survey Analytics Dashboard</p>
+  <span class="badge">📊 400 respondents · 61 variables · Synthetic Dataset</span>
+</header>
+
+<nav id="nav">
+  <button class="active" data-page="overview">Overview</button>
+  <button data-page="demographics">Demographics</button>
+  <button data-page="transport">Transport Patterns</button>
+  <button data-page="painpoints">Pain Points</button>
+  <button data-page="features">Features & Preferences</button>
+  <button data-page="digital">Digital Behaviour</button>
+</nav>
+
+<main>
+
+<!-- ════════════════ OVERVIEW ════════════════ -->
+<div class="page active" id="page-overview">
+
+  <div class="kpi-row">
+    <div class="kpi blue"><div class="val">400</div><div class="lbl">Total Respondents</div></div>
+    <div class="kpi yellow"><div class="val">23.8%</div><div class="lbl">Interested (Yes)</div></div>
+    <div class="kpi green"><div class="val">AED 151</div><div class="lbl">Avg Monthly Spend</div></div>
+    <div class="kpi red"><div class="val">90 min</div><div class="lbl">Avg Commute Time</div></div>
+    <div class="kpi blue"><div class="val">3.6 / 5</div><div class="lbl">Avg Satisfaction</div></div>
+    <div class="kpi yellow"><div class="val">AED 87</div><div class="lbl">Avg Willingness to Pay</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>App Interest Distribution</h3>
+      <canvas id="c-interest"></canvas>
+    </div>
+    <div class="card">
+      <h3>App Interest by University</h3>
+      <canvas id="c-interest-uni"></canvas>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <h3>Transport Satisfaction (1–5)</h3>
+      <canvas id="c-satisfaction"></canvas>
+    </div>
+    <div class="card">
+      <h3>Monthly Spend Distribution (AED)</h3>
+      <canvas id="c-spend-bucket"></canvas>
+    </div>
+    <div class="card">
+      <h3>Commute Time Distribution (min)</h3>
+      <canvas id="c-commute-bucket"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ DEMOGRAPHICS ════════════════ -->
+<div class="page" id="page-demographics">
+  <div class="grid-2">
+    <div class="card">
+      <h3>Gender</h3>
+      <canvas id="c-gender"></canvas>
+    </div>
+    <div class="card">
+      <h3>Level of Study</h3>
+      <canvas id="c-level"></canvas>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>University</h3>
+      <canvas id="c-university"></canvas>
+    </div>
+    <div class="card">
+      <h3>Accommodation Area</h3>
+      <canvas id="c-accommodation"></canvas>
+    </div>
+  </div>
+  <div class="grid-1">
+    <div class="card">
+      <h3>Nationality Region</h3>
+      <canvas id="c-nationality"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ TRANSPORT PATTERNS ════════════════ -->
+<div class="page" id="page-transport">
+  <div class="grid-2">
+    <div class="card">
+      <h3>Primary Transport Mode</h3>
+      <canvas id="c-mode"></canvas>
+    </div>
+    <div class="card">
+      <h3>Avg Monthly Spend by Mode (AED)</h3>
+      <canvas id="c-spend-mode"></canvas>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Days per Week on Campus</h3>
+      <canvas id="c-days"></canvas>
+    </div>
+    <div class="card">
+      <h3>Ride-Hail Frequency</h3>
+      <canvas id="c-ridehail"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ PAIN POINTS ════════════════ -->
+<div class="page" id="page-painpoints">
+  <div class="grid-2">
+    <div class="card">
+      <h3>Pain Points — No. of Students Affected</h3>
+      <canvas id="c-pain"></canvas>
+    </div>
+    <div class="card">
+      <h3>Average Severity (1 = Low, 5 = High)</h3>
+      <canvas id="c-severity"></canvas>
+    </div>
+  </div>
+  <div class="grid-1">
+    <div class="card">
+      <h3>Pain Point Impact (ranked bar)</h3>
+      <div class="bar-list" id="pain-bars"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ FEATURES & PREFERENCES ════════════════ -->
+<div class="page" id="page-features">
+  <div class="grid-2">
+    <div class="card">
+      <h3>Feature Interest — Students Who Want It</h3>
+      <canvas id="c-features"></canvas>
+    </div>
+    <div class="card">
+      <h3>Preferred Transport Modes</h3>
+      <canvas id="c-prefmodes"></canvas>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>What Factors Matter Most (Avg Importance 1–5)</h3>
+      <canvas id="c-importance"></canvas>
+    </div>
+    <div class="card">
+      <h3>Max Acceptable Monthly Budget (AED)</h3>
+      <canvas id="c-budget"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ DIGITAL BEHAVIOUR ════════════════ -->
+<div class="page" id="page-digital">
+  <div class="grid-2">
+    <div class="card">
+      <h3>Apps Currently Used for Transport / Navigation</h3>
+      <canvas id="c-apps"></canvas>
+    </div>
+    <div class="card">
+      <h3>App Comfort Score Distribution (1–5)</h3>
+      <canvas id="c-app-comfort"></canvas>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>Easy Transport · Dubai Academic City · Data Analytics Project · Synthetic Dataset (400 respondents)</footer>
+
+<script>
+// ── Raw data ──────────────────────────────────────────────────────────────────
+const D = {"interest":{"Maybe":225,"Yes":95,"No":80},"transport_mode":{"Own_Car":70,"Taxi_RideHail":66,"University_Shuttle":64,"RTA_Bus":59,"Metro":57,"Carpool":45,"Sub_Van":25,"Walking_Cycling":14},"gender":{"Male":199,"Female":195,"Prefer not to say":6},"university":{"MAHE_Dubai":102,"UOWD":91,"RIT_Dubai":80,"Murdoch_Dubai":74,"Other_DIAC":53},"accommodation":{"Sharjah":74,"Al_Barsha":71,"Deira_BurDubai":69,"Downtown_JBR_JLT":65,"Ajman_Northern":55,"Other":34,"On_Campus":32},"level_of_study":{"Undergraduate":265,"Postgraduate":102,"Foundation":33},"nationality":{"South_Asian":166,"Arab_NonGCC":46,"Arab_GCC":43,"Southeast_Asian":42,"European_Western":40,"African":37,"Other":26},"pain_points":{"HighCost":127,"LongTime":364,"Unreliable":72,"Safety":146,"Overcrowded":92,"NoLateNight":135,"NoDirectRoute":118},"features":{"LiveTracking":328,"CarpoolMatch":244,"SubscriptionPass":230,"FemaleOnly":112,"PickupHome":288,"InAppSupport":205,"CashlessPayment":304,"RealTimeAlerts":264,"RatingSystem":272,"TimetableInteg":209},"avg_severity":{"Cost":2.65,"Time":3.78,"Unreliable":2.33,"Safety":2.71,"Overcrowded":2.48,"LateNight":2.69},"avg_importance":{"Cost":3.53,"Time":3.48,"Safety":3.94,"Comfort":3.08,"Reliability":3.56,"Flexibility":3.05},"spend_buckets":{"<100":165,"100-200":139,"200-300":56,"300-400":26,"400-600":14},"commute_buckets":{"<15":32,"30-45":16,"45-60":29,"60-90":88,"90+":235},"satisfaction":{"1":3,"2":62,"3":125,"4":112,"5":98},"app_usage":{"GoogleMaps":336,"RTA":180,"Uber":228,"Careem":196,"UniPortal":191,"WhatsApp":246},"pref_modes":{"FixedShuttle":213,"OnDemandShuttle":227,"SubVan":155,"Carpool":196,"RideHail":182,"PublicTransport":144},"kpis":{"total_respondents":400,"avg_monthly_spend":151.2,"avg_commute_min":90.2,"pct_interested":23.8,"avg_satisfaction":3.6,"avg_willingness_pay":86.6},"interest_by_uni":{"Maybe":{"MAHE_Dubai":63,"Murdoch_Dubai":39,"Other_DIAC":26,"RIT_Dubai":47,"UOWD":50},"No":{"MAHE_Dubai":18,"Murdoch_Dubai":17,"Other_DIAC":13,"RIT_Dubai":15,"UOWD":17},"Yes":{"MAHE_Dubai":21,"Murdoch_Dubai":18,"Other_DIAC":14,"RIT_Dubai":18,"UOWD":24}},"spend_by_mode":{"Carpool":110.9,"Metro":113.2,"Own_Car":208.7,"RTA_Bus":106.5,"Sub_Van":130.6,"Taxi_RideHail":287.5,"University_Shuttle":81.5,"Walking_Cycling":50.0},"days_per_week":{"5":183,"3_4":133,"6plus":45,"1_2":39}};
+
+// ── Palette ───────────────────────────────────────────────────────────────────
+const P = ['#4f8ef7','#f7c948','#4fc87a','#f75f5f','#a78bfa','#fb923c','#22d3ee','#e879f9','#34d399','#f97316'];
+const gridColor = 'rgba(255,255,255,0.07)';
+const tickColor = '#8b92b8';
+
+Chart.defaults.color = tickColor;
+Chart.defaults.borderColor = gridColor;
+
+function keys(o){return Object.keys(o)}
+function vals(o){return Object.values(o)}
+
+function mkChart(id, type, labels, datasets, opts={}){
+  const ctx = document.getElementById(id);
+  if(!ctx) return;
+  return new Chart(ctx, {
+    type,
+    data:{labels, datasets},
+    options:{
+      responsive:true,
+      maintainAspectRatio:true,
+      plugins:{legend:{labels:{color:tickColor,font:{size:11}}}, tooltip:{mode:'index',intersect:false}},
+      scales: type==='pie'||type==='doughnut'?{}:{
+        x:{ticks:{color:tickColor,font:{size:10}}, grid:{color:gridColor}},
+        y:{ticks:{color:tickColor,font:{size:10}}, grid:{color:gridColor}}
+      },
+      ...opts
+    }
+  });
+}
+
+// ── Charts ───────────────────────────────────────────────────────────────────
+// OVERVIEW
+mkChart('c-interest','doughnut',keys(D.interest),[{data:vals(D.interest),backgroundColor:['#4fc87a','#f75f5f','#f7c948'],borderWidth:0}]);
+
+const unis = keys(D.interest_by_uni.Yes);
+mkChart('c-interest-uni','bar',unis,[
+  {label:'Yes', data:unis.map(u=>D.interest_by_uni.Yes[u]||0), backgroundColor:'#4fc87a'},
+  {label:'Maybe',data:unis.map(u=>D.interest_by_uni.Maybe[u]||0),backgroundColor:'#f7c948'},
+  {label:'No',  data:unis.map(u=>D.interest_by_uni.No[u]||0),  backgroundColor:'#f75f5f'},
+],{plugins:{legend:{position:'top'}},scales:{x:{stacked:false},y:{stacked:false}}});
+
+mkChart('c-satisfaction','bar',keys(D.satisfaction).map(k=>'★'.repeat(k)),[
+  {data:vals(D.satisfaction),backgroundColor:P,borderRadius:6}
+],{plugins:{legend:{display:false}}});
+
+mkChart('c-spend-bucket','bar',keys(D.spend_buckets),[
+  {data:vals(D.spend_buckets),backgroundColor:'#4f8ef7',borderRadius:6}
+],{plugins:{legend:{display:false}}});
+
+mkChart('c-commute-bucket','bar',keys(D.commute_buckets),[
+  {data:vals(D.commute_buckets),backgroundColor:'#a78bfa',borderRadius:6}
+],{plugins:{legend:{display:false}}});
+
+// DEMOGRAPHICS
+mkChart('c-gender','doughnut',keys(D.gender),[{data:vals(D.gender),backgroundColor:['#4f8ef7','#e879f9','#8b92b8'],borderWidth:0}]);
+mkChart('c-level','pie',keys(D.level_of_study),[{data:vals(D.level_of_study),backgroundColor:['#4fc87a','#f7c948','#f75f5f'],borderWidth:0}]);
+mkChart('c-university','bar',keys(D.university),[{data:vals(D.university),backgroundColor:P,borderRadius:6}],{plugins:{legend:{display:false}}});
+mkChart('c-accommodation','bar',keys(D.accommodation),[{data:vals(D.accommodation),backgroundColor:'#fb923c',borderRadius:6}],{plugins:{legend:{display:false}}});
+mkChart('c-nationality','bar',keys(D.nationality),[{data:vals(D.nationality),backgroundColor:P,borderRadius:6}],{plugins:{legend:{display:false}}});
+
+// TRANSPORT
+mkChart('c-mode','bar',keys(D.transport_mode),[{data:vals(D.transport_mode),backgroundColor:P,borderRadius:6}],{plugins:{legend:{display:false}},indexAxis:'y'});
+mkChart('c-spend-mode','bar',keys(D.spend_by_mode),[{data:vals(D.spend_by_mode),backgroundColor:'#f7c948',borderRadius:6}],{plugins:{legend:{display:false}},indexAxis:'y'});
+mkChart('c-days','doughnut',['5 days','3-4 days','6+ days','1-2 days'],[{data:vals(D.days_per_week),backgroundColor:P,borderWidth:0}]);
+mkChart('c-ridehail','bar',['Daily','3-5/wk','1-2/wk','Rarely','Never'],[
+  {data:[8,18,28,30,16].map(p=>Math.round(p*4)),backgroundColor:'#22d3ee',borderRadius:6}
+],{plugins:{legend:{display:false}}});
+
+// PAIN POINTS
+const painLabels = {HighCost:'High Cost',LongTime:'Long Travel Time',Unreliable:'Unreliable Schedule',Safety:'Safety Concerns',Overcrowded:'Overcrowded',NoLateNight:'No Late-Night',NoDirectRoute:'No Direct Route'};
+mkChart('c-pain','bar',keys(D.pain_points).map(k=>painLabels[k]||k),[
+  {data:vals(D.pain_points),backgroundColor:'#f75f5f',borderRadius:6}
+],{plugins:{legend:{display:false}},indexAxis:'y'});
+mkChart('c-severity','radar',keys(D.avg_severity).map(k=>k),[{
+  data:vals(D.avg_severity),backgroundColor:'rgba(79,200,122,.2)',borderColor:'#4fc87a',pointBackgroundColor:'#4fc87a'
+}],{scales:{r:{min:0,max:5,ticks:{stepSize:1},grid:{color:gridColor},angleLines:{color:gridColor},pointLabels:{color:tickColor}}}});
+
+// Pain bars
+const painEl = document.getElementById('pain-bars');
+const painSorted = Object.entries(D.pain_points).sort((a,b)=>b[1]-a[1]);
+const maxPain = painSorted[0][1];
+painSorted.forEach(([k,v])=>{
+  const pct = Math.round(v/maxPain*100);
+  const colors=['#f75f5f','#fb923c','#f7c948','#4fc87a','#4f8ef7','#a78bfa','#22d3ee'];
+  const idx = painSorted.findIndex(([kk])=>kk===k);
+  painEl.innerHTML+=`<div class="bar-item">
+    <div class="name">${painLabels[k]||k}</div>
+    <div class="track"><div class="fill" style="width:${pct}%;background:${colors[idx]}">${v}</div></div>
+    <div class="cnt">${v}</div>
+  </div>`;
+});
+
+// FEATURES
+const featLabels={LiveTracking:'Live Tracking',CarpoolMatch:'Carpool Match',SubscriptionPass:'Sub Pass',FemaleOnly:'Female-Only',PickupHome:'Home Pick-up',InAppSupport:'In-App Support',CashlessPayment:'Cashless Pay',RealTimeAlerts:'RT Alerts',RatingSystem:'Rating System',TimetableInteg:'Timetable Integ'};
+mkChart('c-features','bar',keys(D.features).map(k=>featLabels[k]||k),[
+  {data:vals(D.features),backgroundColor:P,borderRadius:6}
+],{plugins:{legend:{display:false}},indexAxis:'y'});
+
+const prefLabels={FixedShuttle:'Fixed Shuttle',OnDemandShuttle:'On-Demand Shuttle',SubVan:'Sub Van',Carpool:'Carpool',RideHail:'Ride-Hail',PublicTransport:'Public Transport'};
+mkChart('c-prefmodes','bar',keys(D.pref_modes).map(k=>prefLabels[k]||k),[
+  {data:vals(D.pref_modes),backgroundColor:'#4f8ef7',borderRadius:6}
+],{plugins:{legend:{display:false}}});
+
+mkChart('c-importance','radar',keys(D.avg_importance),[{
+  data:vals(D.avg_importance),backgroundColor:'rgba(79,142,247,.2)',borderColor:'#4f8ef7',pointBackgroundColor:'#4f8ef7'
+}],{scales:{r:{min:0,max:5,ticks:{stepSize:1},grid:{color:gridColor},angleLines:{color:gridColor},pointLabels:{color:tickColor}}}});
+
+mkChart('c-budget','bar',['<100','100-200','200-300','300-400','400-600','600-800','800+'],[
+  {data:[165,139,56,26,14,0,0],backgroundColor:'#a78bfa',borderRadius:6}
+],{plugins:{legend:{display:false}}});
+
+// DIGITAL
+mkChart('c-apps','bar',keys(D.app_usage),[
+  {data:vals(D.app_usage),backgroundColor:P,borderRadius:6}
+],{plugins:{legend:{display:false}}});
+
+mkChart('c-app-comfort','bar',['1 – Not comf.','2','3 – Neutral','4','5 – Very comf.'],[
+  {data:[10,55,90,130,115],backgroundColor:'#22d3ee',borderRadius:6}
+],{plugins:{legend:{display:false}}});
+
+// ── Nav ────────────────────────────────────────────────────────────────────
+document.querySelectorAll('#nav button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#nav button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('page-'+btn.dataset.page).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

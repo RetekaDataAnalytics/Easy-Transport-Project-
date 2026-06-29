@@ -1,0 +1,173 @@
+{
+  "interest": {
+    "Maybe": 225,
+    "Yes": 95,
+    "No": 80
+  },
+  "transport_mode": {
+    "Own_Car": 70,
+    "Taxi_RideHail": 66,
+    "University_Shuttle": 64,
+    "RTA_Bus": 59,
+    "Metro": 57,
+    "Carpool": 45,
+    "Sub_Van": 25,
+    "Walking_Cycling": 14
+  },
+  "gender": {
+    "Male": 199,
+    "Female": 195,
+    "Prefer not to say": 6
+  },
+  "university": {
+    "MAHE_Dubai": 102,
+    "UOWD": 91,
+    "RIT_Dubai": 80,
+    "Murdoch_Dubai": 74,
+    "Other_DIAC": 53
+  },
+  "accommodation": {
+    "Sharjah": 74,
+    "Al_Barsha": 71,
+    "Deira_BurDubai": 69,
+    "Downtown_JBR_JLT": 65,
+    "Ajman_Northern": 55,
+    "Other": 34,
+    "On_Campus": 32
+  },
+  "level_of_study": {
+    "Undergraduate": 265,
+    "Postgraduate": 102,
+    "Foundation": 33
+  },
+  "nationality": {
+    "South_Asian": 166,
+    "Arab_NonGCC": 46,
+    "Arab_GCC": 43,
+    "Southeast_Asian": 42,
+    "European_Western": 40,
+    "African": 37,
+    "Other": 26
+  },
+  "pain_points": {
+    "HighCost": 127,
+    "LongTime": 364,
+    "Unreliable": 72,
+    "Safety": 146,
+    "Overcrowded": 92,
+    "NoLateNight": 135,
+    "NoDirectRoute": 118
+  },
+  "features": {
+    "LiveTracking": 328,
+    "CarpoolMatch": 244,
+    "SubscriptionPass": 230,
+    "FemaleOnly": 112,
+    "PickupHome": 288,
+    "InAppSupport": 205,
+    "CashlessPayment": 304,
+    "RealTimeAlerts": 264,
+    "RatingSystem": 272,
+    "TimetableInteg": 209
+  },
+  "avg_severity": {
+    "Cost": 2.65,
+    "Time": 3.78,
+    "Unreliable": 2.33,
+    "Safety": 2.71,
+    "Overcrowded": 2.48,
+    "LateNight": 2.69
+  },
+  "avg_importance": {
+    "Cost": 3.53,
+    "Time": 3.48,
+    "Safety": 3.94,
+    "Comfort": 3.08,
+    "Reliability": 3.56,
+    "Flexibility": 3.05
+  },
+  "spend_buckets": {
+    "<100": 165,
+    "100-200": 139,
+    "200-300": 56,
+    "300-400": 26,
+    "400-600": 14
+  },
+  "commute_buckets": {
+    "<15": 32,
+    "30-45": 16,
+    "45-60": 29,
+    "60-90": 88,
+    "90+": 235
+  },
+  "satisfaction": {
+    "1": 3,
+    "2": 62,
+    "3": 125,
+    "4": 112,
+    "5": 98
+  },
+  "app_usage": {
+    "GoogleMaps": 336,
+    "RTA": 180,
+    "Uber": 228,
+    "Careem": 196,
+    "UniPortal": 191,
+    "WhatsApp": 246
+  },
+  "pref_modes": {
+    "FixedShuttle": 213,
+    "OnDemandShuttle": 227,
+    "SubVan": 155,
+    "Carpool": 196,
+    "RideHail": 182,
+    "PublicTransport": 144
+  },
+  "kpis": {
+    "total_respondents": 400,
+    "avg_monthly_spend": 151.2,
+    "avg_commute_min": 90.2,
+    "pct_interested": 23.8,
+    "avg_satisfaction": 3.6,
+    "avg_willingness_pay": 86.6
+  },
+  "interest_by_uni": {
+    "Maybe": {
+      "MAHE_Dubai": 63,
+      "Murdoch_Dubai": 39,
+      "Other_DIAC": 26,
+      "RIT_Dubai": 47,
+      "UOWD": 50
+    },
+    "No": {
+      "MAHE_Dubai": 18,
+      "Murdoch_Dubai": 17,
+      "Other_DIAC": 13,
+      "RIT_Dubai": 15,
+      "UOWD": 17
+    },
+    "Yes": {
+      "MAHE_Dubai": 21,
+      "Murdoch_Dubai": 18,
+      "Other_DIAC": 14,
+      "RIT_Dubai": 18,
+      "UOWD": 24
+    }
+  },
+  "spend_by_mode": {
+    "Carpool": 110.9,
+    "Metro": 113.2,
+    "Own_Car": 208.7,
+    "RTA_Bus": 106.5,
+    "Sub_Van": 130.6,
+    "Taxi_RideHail": 287.5,
+    "University_Shuttle": 81.5,
+    "Walking_Cycling": 50.0
+  },
+  "days_per_week": {
+    "5": 183,
+    "3_4": 133,
+    "6plus": 45,
+    "1_2": 39
+  }
+}
